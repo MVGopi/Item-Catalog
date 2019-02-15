@@ -1,0 +1,4 @@
+Motog5S_plus=Mobile(name="MotoG5S-Plus",price="16000INR",ram="4GB",rom="64GB",front_cam="5mp",back_cam=13mp,image="https://images-na.ssl-images-amazon.com/images/I/91iEQO5Kl1L._SY355_.jpg",company_id=1)
+Oppo_F7=Mobile(name="Oppo_F7",price="19,990INR",ram="4GB",rom="64GB",front_cam="25mp",back_cam=16mp,image="https://www.91-img.com/pictures/125850-v5-oppo-f7-mobile-phone-large-1.jpg",company_id=2)
+Samsung_GalaxyM20=Mobile(name="Samsung_GalaxyM20",price="12,990INR",ram="4GB",rom="64GB",front_cam="5mp",back_cam=13mp,image="https://techwafer.com/wp-content/uploads/2019/01/Samsung-Galaxy-M20-price-in-Pakistan-600x600.jpg",comapany_id=3)
+Apple_XSMax=Mobile(name="Apple_XSMax",price="119,990INR",ram="4GB",rom="256GB",front_cam="12mp",back_cam=12mp,image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUEEpPnwWju9UaR3N8EucqxPt5vf4qyRsG9mpBRm3Jgf-JaOZM",company_id=4)
