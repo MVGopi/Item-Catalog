@@ -1,0 +1,26 @@
+<html>
+<head>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<link href="https://fonts.googleapis.com/css?family=Shadows+Into+Light" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Jua|Shadows+Into+Light" rel="stylesheet">
+</head>
+<body>
+<center>
+<h1 id="main_heading">{{ company.name }}</h1>
+</center><br>
+<center><a href="#">Add New Mobile</a></center><br>
+<div>
+<div>
+{% for mobile in mobiles_list %}
+    <img src="{{ mobile.image }}" width="200" height="250" bakground=None /><br>
+    <p>Name: {{ mobile.name }}</p>
+    <p>Cost: {{ mobile.price }}</p>
+    <p>RAM: {{ mobile.ram }}</p>
+    <p>ROM: {{ mobile.rom }}</p>
+{% endfor %}<br>
+<a href='#' >Edit</a></br>
+<a href='#' >Delete</a>
+</div>
+</div>
+</body>
+</html>

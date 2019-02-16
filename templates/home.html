@@ -1,0 +1,23 @@
+<html>
+<head>
+<link rel=stylesheet type=text/css href="static/style.css">
+<link href="https://fonts.googleapis.com/css?family=Shadows+Into+Light" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Jua|Shadows+Into+Light" rel="stylesheet">
+</head>
+<body>
+<center>
+<h1 id="main_heading">Mobiles_Store</h1>
+</center>
+<center>
+    <a href={{"url_for(new_mobile_company)"}}>Add New Mobile Company</a>
+</center>
+{% for company in mobile_companies %}
+    <a href =  "{{url_for('show_mobiles', company_id = company.id)}}">
+    <p class="comp_name">{{company.name}}</p>
+    </a>
+    <p><a href = "#">Edit {{company.name}}</a></p>
+    <p> <a href = "#">Delete {{company.name}}</a> </p>
+    <br>
+{% endfor %}
+</body>
+</html>
