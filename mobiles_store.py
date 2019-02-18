@@ -63,17 +63,53 @@ def remove_company(company_id):
 #add mobile
 @app.route('/insert_mobile/<int:company_id>',methods=['POST','GET'])
 def insert_mobile(company_id):
-	if request.method=='POST':
-		new_mobile=Mobile(name=request.form['name'],price=request.form['price'],
-				  ram=request.form['ram'],rom=request.form['rom'],
-	  			  front_cam=request.form['front_cam'],back_cam=request.form['back_cam'],
-				  image=request.form['image'],company_id=company_id)
-		session.add(new_mobile)
-		session.commit()
-		return redirect(url_for('show_mobiles'))
-	else:
-		return render_template('insert_mobile.html')
-	
+    if request.method=='POST':
+        new_mobile=Mobile(name=request.form['name'],price=request.form['price'],
+                          ram=request.form['ram'],rom=request.form['rom'],
+                          front_cam=request.form['front_cam'],back_cam=request.form['back_cam'],
+                          image=request.form['image'],company_id=company_id)
+        session.add(new_mobile)
+        session.commit()
+        return redirect(url_for('show_mobiles',company_id=company_id))
+    else:
+        return render_template('insert_mobile.html',company_id=company_id)
+
+#edit mobile
+@app.route('/edit_mobile/<int:company_id>/<int:mobile_id>',methods=['POST','GET'])
+def edit_mobile(mobile_id,company_id):
+    update_mobile=session.query(Mobile).filter_by(id=mobile_id).one()
+    if request.method=='POST':
+        update_mobile.name=request.form['name']
+        update_mobile.price=request.form['price']
+        update_mobile.ram=request.form['ram']
+        update_mobile.rom=request.form['rom']
+        update_mobile.front_cam=request.form['front_cam']
+        update_mobile.back_cam=request.form['back_cam']
+        update_mobile.image=request.form['image']
+        session.commit()
+        return redirect(url_for('show_mobiles',company_id=company_id))
+    else:
+        return render_template('edit_mobile.html',company_id=company_id,mobile_id=mobile_id,mobile_details=update_mobile)
+
+#delete mobile
+@app.route('/remove_mobile/<int:company_id>/<int:mobile_id>',methods=['POST','GET'])
+def remove_mobile(company_id,mobile_id):
+    delete_mobile=session.query(Mobile).filter_by(id=mobile_id).one()
+    if request.method=="POST":
+        session.delete(delete_mobile)
+        session.commit()
+        return redirect(url_for('show_mobiles',company_id=company_id))
+    else:
+        return render_template('remove_mobile.html',company_id=company_id,mobile_id=mobile_id,mobile=delete_mobile)
+
+
+
+
+
+
+
+
+
 
 
 if __name__=='__main__':

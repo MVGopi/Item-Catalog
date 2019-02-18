@@ -7,20 +7,18 @@ from sqlalchemy import create_engine
 Base = declarative_base()
 
 class User(Base):
-	__tablename__ = 'user'
-	id = Column(Integer, primary_key=True)
-        name = Column(String(250), nullable=False)
-        email = Column(String(250), nullable=False)
-        picture = Column(String(250))
-
-
+	__tablename__='user'
+	id=Column(Integer,primary_key=True)
+	name=Column(String(250),nullable=False)
+	email = Column(String(250), nullable=False)
+	picture=Column(String(250),nullable=False)
 
 class Company(Base):
 	__tablename__ = 'company'
 	"""This table for storing mobile companies list"""
 	id=Column(Integer,primary_key=True)
 	name=Column(String(250),nullable=False)
-	user_id = Column(Integer, ForeignKey('user.id'))
+	user_id = Column(Integer,ForeignKey('user.id'))
 	user = relationship(User)
 
 	@property
@@ -30,7 +28,7 @@ class Company(Base):
                         'id':self.id,
                         'name':self.name
                         }
-		
+
 
 class Mobile(Base):
 	__tablename__ = 'mobile'
@@ -50,7 +48,7 @@ class Mobile(Base):
 	@property
 	def serialize(self):
 		"""Return object data in easily serializeable format"""
-		return 
+		return
 		{
                 	'Id':self.id,
 	    		'Name': self.name,
@@ -60,13 +58,7 @@ class Mobile(Base):
             		'Front_Cam': self.front_cam,
             		'Back_Cam': self.back_cam,
                         'image':self.image
-        
+
         	}
 db_engine = create_engine('sqlite:///mobiles_store.db')
 Base.metadata.create_all(db_engine)
-	
-	
-	
-         
-
-

@@ -19,9 +19,9 @@
     <p>ROM: {{ mobile.rom }}</p>
     <p>Back_Cam: {{ mobile.back_cam }}</p>
     <p>Back_Cam: {{ mobile.front_cam }}</p>
+    <a href="{{ url_for('edit_mobile',company_id=company.id,mobile_id=mobile.id) }}" >Edit</a></br>
+    <a href="{{ url_for('remove_mobile',company_id=company.id,mobile_id=mobile.id) }}" >Delete</a><br><br>
 {% endfor %}<br>
-<a href='#' >Edit</a></br>
-<a href='#' >Delete</a>
 </div>
 </div>
 </body>

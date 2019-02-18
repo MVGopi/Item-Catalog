@@ -8,7 +8,7 @@
 <center>
 <h1>New Mobile</h1>
 </center>
-<form action="{{ url_for('insert_mobile') }}" method = 'post'>
+<form action="{{ url_for('insert_mobile',company_id=company_id) }}" method = 'post'>
          <p>Name:</p>
          <input type ='text' size='30' name='name'>
          <p>Price:</p>
@@ -17,14 +17,14 @@
          <input type ='text' size='30' name='ram'>
          <p>Rom:</p>
          <input type ='text' size='30' name='rom'>
-	 <p>Front_Cam:</p>
+	      <p>Front_Cam:</p>
          <input type ='text' size='30' name='front_cam'>
-	 <p>Back_Cam:</p>
+	      <p>Back_Cam:</p>
          <input type ='text' size='30' name='back_cam'>
-	 <p>Image:</p>
+	      <p>Image:</p>
          <input type ='text' size='150' name='image'>
-         
-         </br>
+        </br>
+        </br>
          <input type='submit' value='Create'>
       </form>
    </body>
