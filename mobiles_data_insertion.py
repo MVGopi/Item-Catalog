@@ -12,7 +12,10 @@ Base.metadata.bind=db_engine
 Database_Session=sessionmaker(bind=db_engine)
 #Database_Session() instance establishes conversations with database
 
-session=Database_Session()
+session=Database_Session() 
+
+#delete users if any existed
+session.query(User).delete
 
 #delete companies if already existed in company table
 session.query(Company).delete()
@@ -20,11 +23,15 @@ session.query(Company).delete()
 #delete mobiles data if already existed in the mobile table
 session.query(Mobile).delete()
 
+#insert one user record
+user=User(name="MvGopi",email="venkatagopi894@gmail.com",picture="https://drive.google.com/drive/folders/0B-DCot06UZdQcHZ4ajVic1hRQjQ")
+session.add(user)
+
 #insert some of the companies
-m= Company(name="Motorola")
-o=Company(name="Oppo")
-s=Company(name="Samsung")
-a=Company(name="Apple")
+m= Company(name="Motorola",user_id=1)
+o=Company(name="Oppo",user_id=2)
+s=Company(name="Samsung",user_id=3)
+a=Company(name="Apple",user_id=4)
 session.add(m)
 session.add(o)
 session.add(s)

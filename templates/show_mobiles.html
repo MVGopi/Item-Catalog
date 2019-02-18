@@ -6,17 +6,19 @@
 </head>
 <body>
 <center>
-<h1 id="main_heading">{{ company.name }}</h1>
+<h1>{{ company.name }}</h1>
 </center><br>
-<center><a href="#">Add New Mobile</a></center><br>
+<center><a href="{{ url_for('insert_mobile',company_id=company.id) }}">Add New Mobile</a></center><br>
 <div>
 <div>
 {% for mobile in mobiles_list %}
-    <img src="{{ mobile.image }}" width="200" height="250" bakground=None /><br>
+    <img src="{{ mobile.image }}" width="200" height="250" /><br>
     <p>Name: {{ mobile.name }}</p>
     <p>Cost: {{ mobile.price }}</p>
     <p>RAM: {{ mobile.ram }}</p>
     <p>ROM: {{ mobile.rom }}</p>
+    <p>Back_Cam: {{ mobile.back_cam }}</p>
+    <p>Back_Cam: {{ mobile.front_cam }}</p>
 {% endfor %}<br>
 <a href='#' >Edit</a></br>
 <a href='#' >Delete</a>
