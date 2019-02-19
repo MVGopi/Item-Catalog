@@ -18,6 +18,7 @@ class Company(Base):
 	"""This table for storing mobile companies list"""
 	id=Column(Integer,primary_key=True)
 	name=Column(String(250),nullable=False)
+	icon=Column(String(250),nullable=False)
 	user_id = Column(Integer,ForeignKey('user.id'))
 	user = relationship(User)
 
@@ -26,7 +27,8 @@ class Company(Base):
                 """Return object data easily  in serailize format"""
                 return{
                         'id':self.id,
-                        'name':self.name
+                        'name':self.name,
+						'icon':self.icon
                         }
 
 

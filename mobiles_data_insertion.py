@@ -12,7 +12,7 @@ Base.metadata.bind=db_engine
 Database_Session=sessionmaker(bind=db_engine)
 #Database_Session() instance establishes conversations with database
 
-session=Database_Session() 
+session=Database_Session()
 
 #delete users if any existed
 session.query(User).delete
@@ -28,10 +28,10 @@ user=User(name="MvGopi",email="venkatagopi894@gmail.com",picture="https://drive.
 session.add(user)
 
 #insert some of the companies
-m= Company(name="Motorola",user_id=1)
-o=Company(name="Oppo",user_id=2)
-s=Company(name="Samsung",user_id=3)
-a=Company(name="Apple",user_id=4)
+m= Company(name="Motorola",user_id=1,icon="https://apkzz.com/wp-content/uploads/2017/07/81545_featured.png")
+o=Company(name="Oppo",user_id=2,icon="https://cdn6.aptoide.com/imgs/d/9/4/d942039af19526adaa8c2047a7af21af_icon.png?w=256")
+s=Company(name="Samsung",user_id=3,icon="https://mostvaluablebrands.com/wp-content/uploads/2016/03/samsung-logo.jpg")
+a=Company(name="Apple",user_id=4,icon="https://images-na.ssl-images-amazon.com/images/I/218MZ3obWgL.jpg")
 session.add(m)
 session.add(o)
 session.add(s)
@@ -52,4 +52,3 @@ session.commit()
 
 
 print("Data given by you has been inserted")
-

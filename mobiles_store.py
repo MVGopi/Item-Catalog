@@ -30,12 +30,12 @@ def show_mobiles(company_id):
 @app.route('/new_company',methods=['POST','GET'])
 def new_company():
 	if request.method=='POST':
-		new_comp=Company(name=request.form['name'])
+		new_comp=Company(name=request.form['name'],icon=request.form['icon'])
 		session.add(new_comp)
 		session.commit()
 		return redirect(url_for('index'))
 	else:
-		return render_template('new_company.html')
+		return render_template('new_company.html',)
 #edit company name
 @app.route('/edit_company/<int:company_id>',methods=['POST','GET'])
 def edit_company(company_id):
@@ -101,15 +101,6 @@ def remove_mobile(company_id,mobile_id):
         return redirect(url_for('show_mobiles',company_id=company_id))
     else:
         return render_template('remove_mobile.html',company_id=company_id,mobile_id=mobile_id,mobile=delete_mobile)
-
-
-
-
-
-
-
-
-
 
 
 if __name__=='__main__':

@@ -1,12 +1,12 @@
 <html>
-   <head>
-      <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
-      <link href="https://fonts.googleapis.com/css?family=Shadows+Into+Light" rel="stylesheet">
-   </head>
+<head>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
    <body>
       <center>
          <h1 id = "main_heading">New Mobile</h1>
       </center>
+      <hr/>
       <form action="#" method = 'post'>
          <p>Name:</p>
          <input type ='text' size='30' name='name'>
@@ -24,7 +24,7 @@
          <input type ='text' size='150' name='rom'>
          </br>
          </br>
-         <input type='submit' value='Create'>
+         <input type='submit' value='Create'><a href = '{{url_for('show_mobiles',company_id=company_id)}}'> Cancel </a>
       </form>
    </body>
 </html>
