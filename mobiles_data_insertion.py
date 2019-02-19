@@ -28,7 +28,7 @@ user=User(name="MvGopi",email="venkatagopi894@gmail.com",picture="https://drive.
 session.add(user)
 
 #insert some of the companies
-m= Company(name="Motorola",user_id=1,icon="https://apkzz.com/wp-content/uploads/2017/07/81545_featured.png")
+m= Company(name="Motorola",user_id=1,icon="https://cdn6.aptoide.com/imgs/d/9/4/d942039af19526adaa8c2047a7af21af_icon.png?w=256")
 o=Company(name="Oppo",user_id=2,icon="https://cdn6.aptoide.com/imgs/d/9/4/d942039af19526adaa8c2047a7af21af_icon.png?w=256")
 s=Company(name="Samsung",user_id=3,icon="https://mostvaluablebrands.com/wp-content/uploads/2016/03/samsung-logo.jpg")
 a=Company(name="Apple",user_id=4,icon="https://images-na.ssl-images-amazon.com/images/I/218MZ3obWgL.jpg")
