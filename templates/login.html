@@ -9,31 +9,50 @@
 <script src="//apis.google.com/js/platform.js?onload=start"> </script>
 
 <!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
 </head>
 
 
 <body>
-<div></div>  
+<div></div>
+<div id="result">
+  <center>
+  <div class="well">
+    <div class="row">
+    <div class="col-sm-9">
+  <h1 style="font-style:italic">Mobiles_Store</h1>
+  </div>
+  <!-- GOOGLE PLUS SIGN IN-->
+  <div id="signinButton" class="col-sm-3">
+  <span class="g-signin"
+              data-scope="openid email"
+              data-clientid="606716486097-34d8u4tv1dqrmo7lt1ft479ir0ps7tkl.apps.googleusercontent.com"
+              data-redirecturi="postmessage"
+              data-accesstype="offline"
+              data-cookiepolicy="single_host_origin"
+              data-callback="signInCallback"
+              data-approvalprompt="force">
+  </span>
+  </div>
+  </div>
+  </div>
+  </center>
+  <center>
+  <div class="row"  >
+  {% for company in mobile_companies %}
+    <div class="col-sm-4">
+    <a href ="{{ url_for('show_mobiles',company_id=company.id) }}">
+    <img src="{{ company.icon }}" width="180px" height="180px">
+    </a>
+    </div>
+  {% endfor %}
+  </div>
+  </center>
+</div>
 
-
-<!-- GOOGLE PLUS SIGN IN-->
-
-          
-          <div id="signinButton">
-          <span class="g-signin"
-            data-scope="openid email"
-            data-clientid="346212828127-iqvt7jeuu43ng4g90lcmf2hojc978hdm.apps.googleusercontent.com"
-            data-redirecturi="postmessage"
-            data-accesstype="offline"
-            data-cookiepolicy="single_host_origin"
-            data-callback="signInCallback"
-            data-approvalprompt="force">
-          </span>
-        </div>
-
-<div id="result"></div>
 
 <script>
 function signInCallback(authResult) {
@@ -52,16 +71,16 @@ function signInCallback(authResult) {
         if (result) {
           $('#result').html(result)
          setTimeout(function() {
-          window.location.href = "/country";
+          window.location.href = "/home";
          }, 4000);
-          
+
       } else if (authResult['error']) {
     console.log('There was an error: ' + authResult['error']);
   } else {
         $('#result').html('Failed to make a server-side call. Check your configuration and console.');
          }
       }
-      
+
   }); } }
 </script>
 
@@ -72,9 +91,3 @@ function signInCallback(authResult) {
   </body>
 
   </html>
-
-
-
-
-
-

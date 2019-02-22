@@ -24,7 +24,7 @@ session.query(Company).delete()
 session.query(Mobile).delete()
 
 #insert one user record
-user=User(name="MvGopi",email="venkatagopi894@gmail.com",picture="https://drive.google.com/drive/folders/0B-DCot06UZdQcHZ4ajVic1hRQjQ")
+user=User(name="venkata gopi",email="venkatagopi894@gmail.com",picture="https://drive.google.com/drive/folders/0B-DCot06UZdQcHZ4ajVic1hRQjQ")
 session.add(user)
 
 #insert some of the companies

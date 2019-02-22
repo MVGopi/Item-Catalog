@@ -22,14 +22,14 @@ Base.metadata.create_all(db_engine)
 Database_Session = sessionmaker(bind=db_engine)
 session=Database_Session()
 
-#login
+'''#login
 @app.route('/login')
-def showLogin():
+def login():
     state=''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(32))
     login_session['state']=state
     company_name=session.query(Company).all()
     mobiles=session.query(Mobile).all()
-    return render_template('login.html',STATE=state,company_name=company_name,mobiles=mobiles)
+    return render_template('home.html',STATE=state,mobile_companies=company_name,mobiles=mobiles)'''
 
 #gconnect
 @app.route('/gconnect',methods=['POST'])
@@ -135,11 +135,19 @@ def getUserID(email):
     except Exception as e:
         return None
 
-#home page
+#index page
 @app.route('/')
 def  index():
-    company_names=session.query(Company).all()
-    return render_template("home.html",mobile_companies=company_names)
+    state=''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(32))
+    login_session['state']=state
+    company_name=session.query(Company).all()
+    mobiles=session.query(Mobile).all()
+    return render_template('login.html',STATE=state,mobile_companies=company_name,mobiles=mobiles)
+#index page
+@app.route('/home')
+def home():
+        company_names=session.query(Company).all()
+        return render_template("home.html",mobile_companies=company_names)
 
 #displaying mobiles
 @app.route('/show_mobiles/<int:company_id>/')
@@ -151,10 +159,8 @@ def show_mobiles(company_id):
 #adding new company name
 @app.route('/new_company',methods=['POST','GET'])
 def new_company():
-    if 'username' not in login_session:
-        return redirect('/login')
     if request.method == 'POST':
-        new_comp = company(name=request.form['name'],icon=request.form['icon'])
+        new_comp = Company(name=request.form['name'],icon=request.form['icon'])
         session.add(new_comp)
         session.commit()
         return redirect(url_for('index'))
@@ -163,8 +169,6 @@ def new_company():
 #edit company name
 @app.route('/edit_company/<int:company_id>',methods=['POST','GET'])
 def edit_company(company_id):
-    if 'username' not in login_session:
-        return redirect('/login')
     edit_comp = session.query(Company).filter_by(id=company_id).one()
     if request.method == 'POST':
         if request.form['name']:
@@ -181,15 +185,13 @@ def edit_company(company_id):
 #remove company
 @app.route('/remove_company/<int:company_id>',methods=['POST','GET'])
 def remove_company(company_id):
-    if 'username' not in login_session:
-        return redirect('/login')
     remove_comp=session.query(Company).filter_by(id=company_id).one()
     if request.method=='POST':
         session.delete(remove_comp)
         session.commit()
         return redirect(url_for('index'))
     else:
-        return render_template('remove_company.html',company_id=company_id)
+        return render_template('remove_company.html',company_id=company_id,company=remove_comp)
     if remove_comp.user_id != login_session['user_id']:
         return "<script>function myFunction(){alert('You are not authorized to\
         remove this mobile_company. please sign  in order\
