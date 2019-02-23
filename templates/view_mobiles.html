@@ -10,8 +10,14 @@
   <center>
   <div class="well">
     <div class="row">
+      <div class="col-sm-2">
+    <b><a href="{{ url_for('home') }}">Home</a><b>
+    </div>
     <div class="col-sm-9">
   <h1 style="font-style:italic">{{ company.name }} Mobiles</h1>
+  </div>
+  <div class="col-sm-14">
+    <a href="{{ url_for('view_mobiles',company_id=company.id) }}">Add New Mobile</a>
   </div>
   </div>
   </div>
@@ -28,7 +34,9 @@
     <td>ROM:{{ mobile.rom }}</td><br>
     <td>Back_Cam:{{ mobile.back_cam }}</td><br>
     <td>Back_Cam:{{ mobile.front_cam }}</td>
-  </tr><br>
+    </tr><br>
+    <a href="{{ url_for('edit_mobile',company_id=company.id,mobile_id=mobile.id) }}">Edit</a><br>
+    <a href="{{ url_for('remove_mobile',company_id=company.id,mobile_id=mobile.id) }}" >Delete</a>
     </div>
 {% endfor %}
 </div>

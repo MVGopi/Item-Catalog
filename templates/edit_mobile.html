@@ -1,12 +1,24 @@
 <html>
 <head>
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-<center>
-<h1>Edit {{ mobile_details.name }}</h1>
-</center>
-<hr/>
+  <center>
+  <div class="well">
+    <div class="row">
+      <div class="col-sm-2">
+    <b><a href="{{ url_for('home') }}">Home</a><b>
+    </div>
+  <div class="col-sm-9">
+    <h1>Edit {{ mobile_details.name }}</h1>
+  </div>
+  </div>
+  </div>
+  </center>
 <form action="{{ url_for('edit_mobile',company_id=company_id,mobile_id=mobile_id) }}" method='post'>
   <p>Name:</p>
   <input type ='text' size='30' name='name' value="{{ mobile_details.name }}">
@@ -22,7 +34,7 @@
   <input type ='text' size='30' name='back_cam' value="{{ mobile_details.back_cam }}">
   <p>Image:</p>
   <input type ='text' size='150' name='image' value="{{ mobile_details.image }}"><br><br>
-  <input type='submit' value='update'><a href = '{{url_for('show_mobiles',company_id=company_id)}}'> Cancel </a>
+  <input type='submit' value='update'><a href = '{{url_for('view_mobiles',company_id=company_id)}}'> Cancel </a>
 </form>
 </body>
 </html

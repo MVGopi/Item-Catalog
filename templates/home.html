@@ -2,9 +2,6 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-  <script src="../bootstrap/jquery.min.js"></script>
-  <script src="../bootstrap/js/bootstrap.min.js"></script> -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -20,7 +17,7 @@
 <h1 style="font-style:italic">Mobiles_Store</h1>
 </div>
 <div class="col-sm-14">
-  <a href="#">Logout</a>
+  <a href="{{url_for('logout')}}">Logout</a>
 </div>
 </div>
 </div>
@@ -29,7 +26,7 @@
 <div class="row"  >
 {% for company in mobile_companies %}
   <div class="col-sm-4">
-  <a href ="{{ url_for('show_mobiles',company_id=company.id) }}">
+  <a href ="{{ url_for('view_mobiles',company_id=company.id) }}">
   <img src="{{ company.icon }}" width="180px" height="180px">
   </a>
   <p><a href = "{{ url_for('edit_company',company_id=company.id) }}">Edit {{company.name}}</a></p><br>

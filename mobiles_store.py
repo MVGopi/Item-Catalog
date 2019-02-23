@@ -137,7 +137,7 @@ def getUserID(email):
 
 #index page
 @app.route('/')
-def  index():
+def index():
     state=''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(32))
     login_session['state']=state
     company_name=session.query(Company).all()
@@ -146,15 +146,26 @@ def  index():
 #index page
 @app.route('/home')
 def home():
-        company_names=session.query(Company).all()
-        return render_template("home.html",mobile_companies=company_names)
+    if 'username' not in login_session:
+        return redirect('/index')
+    company_names=session.query(Company).all()
+    return render_template("home.html",mobile_companies=company_names)
 
 #displaying mobiles
 @app.route('/show_mobiles/<int:company_id>/')
 def show_mobiles(company_id):
+    if 'username' not in login_session:
+        return redirect('/index')
     company_name=session.query(Company).filter_by(id=company_id).one()
     mobiles=session.query(Mobile).filter_by(company_id=company_id).all()
     return render_template('show_mobiles.html',mobiles_list=mobiles,company=company_name)
+
+#viewing mobiles after login
+@app.route('/view_mobiles/<int:company_id>/')
+def view_mobiles(company_id):
+    company_name=session.query(Company).filter_by(id=company_id).one()
+    mobiles=session.query(Mobile).filter_by(company_id=company_id).all()
+    return render_template('view_mobiles.html',mobiles_list=mobiles,company=company_name)
 
 #adding new company name
 @app.route('/new_company',methods=['POST','GET'])
@@ -163,7 +174,7 @@ def new_company():
         new_comp = Company(name=request.form['name'],icon=request.form['icon'])
         session.add(new_comp)
         session.commit()
-        return redirect(url_for('index'))
+        return redirect(url_for('home'))
     else:
         return render_template('new_company.html')
 #edit company name
@@ -173,7 +184,7 @@ def edit_company(company_id):
     if request.method == 'POST':
         if request.form['name']:
             edit_comp.name = request.form['name']
-            return redirect(url_for('index'))
+            return redirect(url_for('home'))
     else:
         return render_template('edit_company.html', company=edit_comp)
     if edit_comp.user_id != login_session['user_id']:
@@ -189,7 +200,7 @@ def remove_company(company_id):
     if request.method=='POST':
         session.delete(remove_comp)
         session.commit()
-        return redirect(url_for('index'))
+        return redirect(url_for('home'))
     else:
         return render_template('remove_company.html',company_id=company_id,company=remove_comp)
     if remove_comp.user_id != login_session['user_id']:
@@ -200,16 +211,20 @@ def remove_company(company_id):
 #add mobile
 @app.route('/insert_mobile/<int:company_id>',methods=['POST','GET'])
 def insert_mobile(company_id):
-    if request.method=='POST':
+    if 'username' not in login_session:
+        return redirect('/index')
+
+    if request.method=='POST' and request.form['name']:
         new_mobile=Mobile(name=request.form['name'],price=request.form['price'],
                           ram=request.form['ram'],rom=request.form['rom'],
-                          front_cam=request.form['front_cam'],back_cam=request.form['back_cam'],
+                          back_cam=request.form['back'],front_cam=request.form['front'],
                           image=request.form['image'],company_id=company_id)
         session.add(new_mobile)
         session.commit()
-        return redirect(url_for('show_mobiles',company_id=company_id))
+        return redirect(url_for('view_mobiles',company_id=company_id))
     else:
         return render_template('insert_mobile.html',company_id=company_id)
+    return render_template('insert_mobile.html',company_id=company_id)
 
 #edit mobile
 @app.route('/edit_mobile/<int:company_id>/<int:mobile_id>',methods=['POST','GET'])
@@ -224,7 +239,7 @@ def edit_mobile(mobile_id,company_id):
         update_mobile.back_cam=request.form['back_cam']
         update_mobile.image=request.form['image']
         session.commit()
-        return redirect(url_for('show_mobiles',company_id=company_id))
+        return redirect(url_for('view_mobiles',company_id=company_id))
     else:
         return render_template('edit_mobile.html',company_id=company_id,mobile_id=mobile_id,mobile_details=update_mobile)
 
@@ -235,10 +250,10 @@ def remove_mobile(company_id,mobile_id):
     if request.method=="POST":
         session.delete(delete_mobile)
         session.commit()
-        return redirect(url_for('show_mobiles',company_id=company_id))
+        return redirect(url_for('view_mobiles',company_id=company_id))
     else:
         return render_template('remove_mobile.html',company_id=company_id,mobile_id=mobile_id,mobile=delete_mobile)
-
+@app.route('/logout')
 def logout():
     access_token=login_session['access_token']
     print("In gdisconnect access token is %s",access_token)
@@ -267,7 +282,7 @@ def logout():
         response = make_response(json.dumps('Successfully disconnected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         flash("Successfully logged out")
-        return redirect(url_for('showCountry'))
+        return redirect(url_for('index'))
     else:
         response = make_response(
             json.dumps('Failed to revoke token for given user.', 400))
