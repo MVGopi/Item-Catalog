@@ -146,16 +146,12 @@ def index():
 #index page
 @app.route('/home')
 def home():
-    if 'username' not in login_session:
-        return redirect('/index')
     company_names=session.query(Company).all()
     return render_template("home.html",mobile_companies=company_names)
 
 #displaying mobiles
 @app.route('/show_mobiles/<int:company_id>/')
 def show_mobiles(company_id):
-    if 'username' not in login_session:
-        return redirect('/index')
     company_name=session.query(Company).filter_by(id=company_id).one()
     mobiles=session.query(Mobile).filter_by(company_id=company_id).all()
     return render_template('show_mobiles.html',mobiles_list=mobiles,company=company_name)
@@ -177,43 +173,44 @@ def new_company():
         return redirect(url_for('home'))
     else:
         return render_template('new_company.html')
+
+
 #edit company name
 @app.route('/edit_company/<int:company_id>',methods=['POST','GET'])
 def edit_company(company_id):
     edit_comp = session.query(Company).filter_by(id=company_id).one()
+    admin=getUserInfo(login_session['user_id'])
+    if admin.id != login_session['user_id']:
+        flash("You cannot edit this company."
+              "This is belongs to %s" % admin.name)
+        return redirect(url_for('home'))
     if request.method == 'POST':
         if request.form['name']:
             edit_comp.name = request.form['name']
             return redirect(url_for('home'))
     else:
         return render_template('edit_company.html', company=edit_comp)
-    if edit_comp.user_id != login_session['user_id']:
-        return "<script>function myFunction(){alert('You are not authorized to\
-        edit this mobile_company. please sign  in order\
-        to edit.');}</script><body onload='myFunction()'>"
 
 
 #remove company
 @app.route('/remove_company/<int:company_id>',methods=['POST','GET'])
 def remove_company(company_id):
     remove_comp=session.query(Company).filter_by(id=company_id).one()
+    admin=getUserInfo(login_session['user_id'])
+    if admin.id != login_session['user_id']:
+        flash("You cannot remove this company."
+              "This is belongs to %s" % admin.name)
+        return redirect(url_for('home'))
     if request.method=='POST':
         session.delete(remove_comp)
         session.commit()
         return redirect(url_for('home'))
     else:
         return render_template('remove_company.html',company_id=company_id,company=remove_comp)
-    if remove_comp.user_id != login_session['user_id']:
-        return "<script>function myFunction(){alert('You are not authorized to\
-        remove this mobile_company. please sign  in order\
-        to remove.');}</script><body onload='myFunction()'>"
 
 #add mobile
 @app.route('/insert_mobile/<int:company_id>',methods=['POST','GET'])
 def insert_mobile(company_id):
-    if 'username' not in login_session:
-        return redirect('/index')
-
     if request.method=='POST' and request.form['name']:
         new_mobile=Mobile(name=request.form['name'],price=request.form['price'],
                           ram=request.form['ram'],rom=request.form['rom'],
@@ -230,6 +227,11 @@ def insert_mobile(company_id):
 @app.route('/edit_mobile/<int:company_id>/<int:mobile_id>',methods=['POST','GET'])
 def edit_mobile(mobile_id,company_id):
     update_mobile=session.query(Mobile).filter_by(id=mobile_id).one()
+    admin=getUserInfo(login_session['user_id'])
+    if admin.id != login_session['user_id']:
+        flash("You cannot edit this Mobile Details."
+              "This is belongs to %s" % admin.name)
+        return redirect(url_for('view_mobiles',company_id=company_id))
     if request.method=='POST':
         update_mobile.name=request.form['name']
         update_mobile.price=request.form['price']
@@ -247,6 +249,11 @@ def edit_mobile(mobile_id,company_id):
 @app.route('/remove_mobile/<int:company_id>/<int:mobile_id>',methods=['POST','GET'])
 def remove_mobile(company_id,mobile_id):
     delete_mobile=session.query(Mobile).filter_by(id=mobile_id).one()
+    admin=getUserInfo(login_session['user_id'])
+    if admin.id != login_session['user_id']:
+        flash("You cannot remove this Mobile Details."
+              "This is belongs to %s" % admin.name)
+        return redirect(url_for('view_mobiles',company_id=company_id))
     if request.method=="POST":
         session.delete(delete_mobile)
         session.commit()
