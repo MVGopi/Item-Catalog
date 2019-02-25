@@ -53,3 +53,9 @@ To get the Google login working there are a few additional steps:
 12.Rename JSON file to client_secrets.json
 13.Place JSON file in book-store directory that you cloned from here
 14.Run application using python /Item-Catalog/mobiles_store.py
+
+#JSON Endpoints
+
+company/1/JSON--->displays the details of mobile company like name,icon
+
+mobile/1/JSON--->displays the details of particular mobile like name,price,ram,rom,cam

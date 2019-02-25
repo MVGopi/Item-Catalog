@@ -24,12 +24,8 @@ class Company(Base):
 
 	@property
 	def serialize(self):
-                """Return object data easily  in serailize format"""
-                return{
-                        'id':self.id,
-                        'name':self.name,
-						'icon':self.icon
-                        }
+		"""Return object data easily  in serailize format"""
+		return{"id":self.id,"name":self.name,"icon":self.icon}
 
 
 class Mobile(Base):
@@ -50,17 +46,6 @@ class Mobile(Base):
 	@property
 	def serialize(self):
 		"""Return object data in easily serializeable format"""
-		return
-		{
-                	'Id':self.id,
-	    		'Name': self.name,
-            		'Price': self.price,
-             		'RAM': self.ram,
-            		'ROM': self.ROM,
-            		'Front_Cam': self.front_cam,
-            		'Back_Cam': self.back_cam,
-                        'image':self.image
-
-        	}
+		return{"Id":self.id,"Name": self.name,"Price": self.price,"RAM": self.ram,"ROM": self.rom,'Front_Cam': self.front_cam,"Back_Cam": self.back_cam,"image":self.image}
 db_engine = create_engine('sqlite:///mobiles_store.db')
 Base.metadata.create_all(db_engine)

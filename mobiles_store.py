@@ -22,18 +22,10 @@ Base.metadata.create_all(db_engine)
 Database_Session = sessionmaker(bind=db_engine)
 session=Database_Session()
 
-'''#login
-@app.route('/login')
-def login():
-    state=''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(32))
-    login_session['state']=state
-    company_name=session.query(Company).all()
-    mobiles=session.query(Mobile).all()
-    return render_template('home.html',STATE=state,mobile_companies=company_name,mobiles=mobiles)'''
-
 #gconnect
 @app.route('/gconnect',methods=['POST'])
 def gconnect():
+    """Instance for connecting with google  """
     if request.args.get('state') != login_session['state']:
 
         response=make_response(json.dumps('Invalid State parameter'),401)
@@ -113,6 +105,7 @@ def gconnect():
     return output
 #create User
 def createUser(login_session):
+    """Instance for adding new user to User model """
     newUser=User(
         name=login_session['username'],
         email=login_session['email'],
@@ -125,10 +118,12 @@ def createUser(login_session):
     return user.id
 
 def getUserInfo(user_id):
+    """To get user_id from User table """
     user=session.query(User).filter_by(id=user_id).one()
     return user
 
 def getUserID(email):
+    """For getting particular user details from user model """
     try:
         user=session.query(User).filter_by(email=email).one()
         return user.id
@@ -138,6 +133,7 @@ def getUserID(email):
 #index page
 @app.route('/')
 def index():
+    """Here we an sigin to view,add and update mobiles information """
     state=''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(32))
     login_session['state']=state
     company_name=session.query(Company).all()
@@ -146,12 +142,14 @@ def index():
 #index page
 @app.route('/home')
 def home():
+    """Page that comes after user authentication """
     company_names=session.query(Company).all()
     return render_template("home.html",mobile_companies=company_names)
 
 #displaying mobiles
 @app.route('/show_mobiles/<int:company_id>/')
 def show_mobiles(company_id):
+    """Viewing mobiles and thier specifications before sigin """
     company_name=session.query(Company).filter_by(id=company_id).one()
     mobiles=session.query(Mobile).filter_by(company_id=company_id).all()
     return render_template('show_mobiles.html',mobiles_list=mobiles,company=company_name)
@@ -159,6 +157,7 @@ def show_mobiles(company_id):
 #viewing mobiles after login
 @app.route('/view_mobiles/<int:company_id>/')
 def view_mobiles(company_id):
+    """Viewing mobiles and thier specifications after sigin """
     company_name=session.query(Company).filter_by(id=company_id).one()
     mobiles=session.query(Mobile).filter_by(company_id=company_id).all()
     return render_template('view_mobiles.html',mobiles_list=mobiles,company=company_name)
@@ -166,6 +165,12 @@ def view_mobiles(company_id):
 #adding new company name
 @app.route('/new_company',methods=['POST','GET'])
 def new_company():
+    """This instance can new mobile companies """
+    admin=getUserInfo(login_session['user_id'])
+    if admin.id != login_session['user_id']:
+        flash("You cannot add this company."
+              "This is belongs to %s" % admin.name)
+        return redirect(url_for('home'))
     if request.method == 'POST':
         new_comp = Company(name=request.form['name'],icon=request.form['icon'])
         session.add(new_comp)
@@ -178,6 +183,7 @@ def new_company():
 #edit company name
 @app.route('/edit_company/<int:company_id>',methods=['POST','GET'])
 def edit_company(company_id):
+    """Updation of company name """
     edit_comp = session.query(Company).filter_by(id=company_id).one()
     admin=getUserInfo(login_session['user_id'])
     if admin.id != login_session['user_id']:
@@ -195,6 +201,7 @@ def edit_company(company_id):
 #remove company
 @app.route('/remove_company/<int:company_id>',methods=['POST','GET'])
 def remove_company(company_id):
+    """For removing a particular company """
     remove_comp=session.query(Company).filter_by(id=company_id).one()
     admin=getUserInfo(login_session['user_id'])
     if admin.id != login_session['user_id']:
@@ -211,6 +218,12 @@ def remove_company(company_id):
 #add mobile
 @app.route('/insert_mobile/<int:company_id>',methods=['POST','GET'])
 def insert_mobile(company_id):
+    """Here we can add new mobiles and its specifications to particular company """
+    admin=getUserInfo(login_session['user_id'])
+    if admin.id != login_session['user_id']:
+        flash("You cannot add this mobiles."
+              "This is belongs to %s" % admin.name)
+        return redirect(url_for('home'))
     if request.method=='POST' and request.form['name']:
         new_mobile=Mobile(name=request.form['name'],price=request.form['price'],
                           ram=request.form['ram'],rom=request.form['rom'],
@@ -226,6 +239,7 @@ def insert_mobile(company_id):
 #edit mobile
 @app.route('/edit_mobile/<int:company_id>/<int:mobile_id>',methods=['POST','GET'])
 def edit_mobile(mobile_id,company_id):
+    """In this edit_mobile method we can update particular mobile details. """
     update_mobile=session.query(Mobile).filter_by(id=mobile_id).one()
     admin=getUserInfo(login_session['user_id'])
     if admin.id != login_session['user_id']:
@@ -248,6 +262,7 @@ def edit_mobile(mobile_id,company_id):
 #delete mobile
 @app.route('/remove_mobile/<int:company_id>/<int:mobile_id>',methods=['POST','GET'])
 def remove_mobile(company_id,mobile_id):
+    """Removes the particular mobile from mobiles  information data """
     delete_mobile=session.query(Mobile).filter_by(id=mobile_id).one()
     admin=getUserInfo(login_session['user_id'])
     if admin.id != login_session['user_id']:
@@ -262,6 +277,7 @@ def remove_mobile(company_id,mobile_id):
         return render_template('remove_mobile.html',company_id=company_id,mobile_id=mobile_id,mobile=delete_mobile)
 @app.route('/logout')
 def logout():
+    """Disconnects the user from google."""
     access_token=login_session['access_token']
     print("In gdisconnect access token is %s",access_token)
     print("User Name is:")
@@ -295,6 +311,18 @@ def logout():
             json.dumps('Failed to revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
         return response
+
+@app.route('/company/<int:id>/JSON')
+def CompanyJSON(id):
+    """Returns json data of mobile companies from company model"""
+    companies = session.query(Company).filter_by(id=id).all()
+    return jsonify(companies=[i.serialize for i in companies])
+
+@app.route('/mobile/<int:id>/JSON')
+def MobilesJSON(id):
+    """Returns json data of mobiles specifications from mobile model """
+    mob = session.query(Mobile).filter_by(company_id=id).all()
+    return jsonify(mob=[i.serialize for i in mob])
 
 if __name__=='__main__':
     app.secret_key='super_secret_key'

@@ -9,19 +9,19 @@
 <hr/>
 <form action="{{ url_for('insert_mobile',company_id=company_id) }}" method = 'post'>
          <p>Name:</p>
-         <input type ='text' size='30' name='name'>
+         <input type ='text' size='30' name='name' required>
          <p>Price:</p>
-         <input type ='text' size='30' name='price'>
+         <input type ='text' size='30' name='price' required>
          <p>Ram:</p>
-         <input type ='text' size='30' name='ram'>
+         <input type ='text' size='30' name='ram' required>
          <p>Rom:</p>
-         <input type ='text' size='30' name='rom'>
+         <input type ='text' size='30' name='rom' required>
 	      <p>Back_Cam:</p>
-         <input type ='text' size='30' name='back'>
+         <input type ='text' size='30' name='back' required>
 	      <p>Front_Cam:</p>
-         <input type ='text' size='30' name='front'>
+         <input type ='text' size='30' name='front' required>
 	      <p>Image:</p>
-         <input type ='text' size='150' name='image'>
+         <input type ='text' size='150' name='image' required>
         </br>
         </br>
          <input type='submit' value='Create'><a href = '{{url_for('view_mobiles',company_id=company_id)}}'> Cancel </a>
